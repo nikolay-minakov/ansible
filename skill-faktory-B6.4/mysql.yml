@@ -1,0 +1,20 @@
+---
+
+- hosts: localhost
+  gather_facts: true
+  tasks:
+#      - name: Download mysql repository using CURL
+#        ansible.builtin.yum:
+#          name: https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
+      - name: Install mysql-server
+        ansible.builtin.yum:
+          name: mysql-server
+      - name: Enable Mysql systemd
+        ansible.builtin.systemd:
+          name: mysqld
+          enabled: true
+          masked: no
+      - name: Start Mysql Service
+        ansible.builtin.systemd:
+          name: mysqld
+          state: started
