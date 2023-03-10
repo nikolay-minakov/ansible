@@ -1,0 +1,28 @@
+---
+
+- hosts: localhost
+  gather_facts: true
+  tasks:
+      - name: Install yum-utils
+        ansible.builtin.yum:
+          name: yum-utils
+      - name: Add repo
+        ansible.builtin.command:
+          cmd: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+      - name: Instal Docker latest
+        ansible.builtin.yum:
+          name:
+            - docker-ce
+            - docker-ce-cli
+            - containerd.io
+            - docker-buildx-plugin
+            - docker-compose-plugin
+      - name: Enable Docker systemd
+        ansible.builtin.systemd:
+          name: docker
+          enabled: true
+          masked: no
+      - name: Start Docker Service
+        ansible.builtin.systemd:
+          name: docker
+          state: started
